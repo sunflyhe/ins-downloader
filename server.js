@@ -218,7 +218,7 @@ app.post('/api/open-folder', (req, res) => {
   const dirToOpen = fs.existsSync(todayDir) ? todayDir : DOWNLOADS_DIR;
   exec(`open "${dirToOpen}"`, (err) => {
     if (err) {
-      return res.status(500).json({ error: 'Could not open folder' });
+      return res.status(500).json({ error: 'open_folder_failed' });
     }
     res.json({ success: true });
   });
@@ -228,12 +228,12 @@ app.post('/api/open-folder', (req, res) => {
 app.post('/api/open-file', (req, res) => {
   const { filePath } = req.body;
   if (!filePath || !fs.existsSync(filePath)) {
-    return res.status(400).json({ error: 'File does not exist' });
+    return res.status(400).json({ error: 'file_not_found' });
   }
 
   exec(`open "${filePath}"`, (err) => {
     if (err) {
-      return res.status(500).json({ error: 'Could not open file' });
+      return res.status(500).json({ error: 'open_file_failed' });
     }
     res.json({ success: true });
   });
@@ -375,9 +375,9 @@ function processQueue() {
     } else {
       nextJob.status = 'failed';
       if (stderrOutput.includes('empty media response') || stderrOutput.includes('cookies') || stderrOutput.includes('login') || stderrOutput.includes('Sign in')) {
-        nextJob.error = '下载失败。Instagram 限制了匿名访问，请尝试开启 Cookie 授权后再试。';
+        nextJob.error = 'instagram_auth';
       } else {
-        nextJob.error = '下载失败。请检查链接或网络，或尝试开启 Cookie 授权。';
+        nextJob.error = 'download_failed';
       }
     }
     

@@ -67,11 +67,47 @@
       filter: blur(60px);
     }
 
-    .connection-status {
+    .top-controls {
       position: fixed;
       top: 1.25rem;
       right: 1.5rem;
       z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 100px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      padding: 0.15rem;
+    }
+
+    .lang-switch button {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.65rem;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-switch button.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .connection-status {
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -525,9 +561,15 @@
 </head>
 <body>
 
-  <div class="connection-status">
-    <div id="statusDot" class="status-dot"></div>
-    <span id="statusText">正在连接本地服务...</span>
+  <div class="top-controls">
+    <div class="lang-switch" id="langSwitch">
+      <button type="button" data-lang="zh" class="active">中文</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <div class="connection-status">
+      <div id="statusDot" class="status-dot"></div>
+      <span id="statusText">正在连接本地服务...</span>
+    </div>
   </div>
 
   <main>
@@ -537,34 +579,34 @@
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
           </svg>
-          导入下载任务
+          <span data-i18n="card.import">导入下载任务</span>
         </div>
 
         <!-- Text area import -->
         <div class="form-group" style="flex: 1; display: flex; flex-direction: column;">
-          <label for="urlsInput">输入 Instagram 视频链接</label>
+          <label for="urlsInput" data-i18n="label.urls">输入 Instagram 视频链接</label>
           <textarea id="urlsInput" style="flex: 1; min-height: 150px;" placeholder="https://www.instagram.com/p/xxxxx/&#10;https://www.instagram.com/reel/yyyyy/"></textarea>
         </div>
 
         <!-- Cookies Configuration -->
         <div class="form-group">
-          <label for="cookiesBrowserSelect">浏览器 Cookie 来源</label>
+          <label for="cookiesBrowserSelect" data-i18n="label.cookies">浏览器 Cookie 来源</label>
           <select id="cookiesBrowserSelect">
             <option value="none">无 (默认)</option>
           </select>
         </div>
 
-        <div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin: -0.5rem 0;">或</div>
+        <div data-i18n="divider.or" style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin: -0.5rem 0;">或</div>
 
         <!-- Drag & Drop Zone -->
         <div class="form-group">
-          <label>上传 CSV 或 Excel 文件批量导入</label>
+          <label data-i18n="label.upload">上传 CSV 或 Excel 文件批量导入</label>
           <div id="dropzone" class="dropzone">
             <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"></path>
             </svg>
-            <p><span class="highlight">点击选择</span> 或拖拽文件至此</p>
-            <p style="font-size: 0.75rem;">支持 .csv, .xlsx, .xls</p>
+            <p data-i18n-html="dropzone.main"><span class="highlight">点击选择</span> 或拖拽文件至此</p>
+            <p data-i18n="dropzone.hint" style="font-size: 0.75rem;">支持 .csv, .xlsx, .xls</p>
             <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" style="display: none;">
           </div>
         </div>
@@ -573,9 +615,9 @@
           <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
           </svg>
-          开始下载任务
+          <span data-i18n="btn.start">开始下载任务</span>
         </button>
-        <button id="clearUrlsBtn" class="btn btn-secondary">清除链接</button>
+        <button id="clearUrlsBtn" class="btn btn-secondary" data-i18n="btn.clearUrls">清除链接</button>
       </div>
 
     </div>
@@ -587,7 +629,7 @@
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path>
           </svg>
-          下载任务队列
+          <span data-i18n="card.queue">下载任务队列</span>
         </div>
         <span id="queueCount" class="queue-count">0 个任务</span>
       </div>
@@ -597,13 +639,13 @@
           <svg style="width: 1.1rem; height: 1.1rem; color: var(--text-muted);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776"></path>
           </svg>
-          打开下载文件夹
+          <span data-i18n="btn.openFolder">打开下载文件夹</span>
         </button>
         <button id="clearBtn" class="btn btn-secondary">
           <svg style="width: 1.1rem; height: 1.1rem; color: var(--text-muted);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
           </svg>
-          清空已完成
+          <span data-i18n="btn.clearDone">清空已完成</span>
         </button>
       </div>
 
@@ -613,7 +655,7 @@
           <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"></path>
           </svg>
-          <p>当前队列为空，请在左侧添加下载任务</p>
+          <p data-i18n="queue.empty">当前队列为空，请在左侧添加下载任务</p>
         </div>
       </div>
     </div>
@@ -624,7 +666,7 @@
     <svg class="toast-icon" style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
     </svg>
-    <span id="toastMsg" class="toast-msg">任务添加成功！</span>
+    <span id="toastMsg" class="toast-msg"></span>
   </div>
 
   <!-- SheetJS & PapaParse for CSV / Excel parsing in frontend -->
@@ -632,6 +674,164 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <script>
+    const I18N = {
+      zh: {
+        'title': 'InstaDownloader - 本地视频下载器',
+        'status.connecting': '正在连接本地服务...',
+        'status.connected': '本地服务已连接',
+        'status.retry': '连接断开，正在重试...',
+        'card.import': '导入下载任务',
+        'card.queue': '下载任务队列',
+        'label.urls': '输入 Instagram 视频链接',
+        'label.cookies': '浏览器 Cookie 来源',
+        'label.upload': '上传 CSV 或 Excel 文件批量导入',
+        'cookies.none': '无 (默认)',
+        'divider.or': '或',
+        'dropzone.main': '<span class="highlight">点击选择</span> 或拖拽文件至此',
+        'dropzone.hint': '支持 .csv, .xlsx, .xls',
+        'btn.start': '开始下载任务',
+        'btn.clearUrls': '清除链接',
+        'btn.openFolder': '打开下载文件夹',
+        'btn.clearDone': '清空已完成',
+        'btn.download': '下载视频',
+        'btn.openLocal': '打开本地',
+        'queue.empty': '当前队列为空，请在左侧添加下载任务',
+        'queue.count': '{n} 个任务',
+        'job.pending': '排队中',
+        'job.downloading': '下载中',
+        'job.completed': '已完成',
+        'job.failed': '失败',
+        'job.waiting': '等待中...',
+        'job.done': '下载完毕',
+        'job.error': '出错了',
+        'job.speedEta': '速度: {speed} | 剩余: {eta}',
+        'toast.added': '已成功添加 {n} 个任务',
+        'toast.addFailed': '添加任务失败',
+        'toast.serverFail': '服务器连接失败',
+        'toast.invalidUrl': '请输入有效的 Instagram 视频 URL (以 http/https 开头)',
+        'toast.cleared': '已清理已完成任务',
+        'toast.fileType': '仅支持 .csv, .xlsx, .xls 文件格式',
+        'toast.csvError': 'CSV 文件解析错误: {msg}',
+        'toast.excelError': 'Excel 文件解析错误: {msg}',
+        'toast.noUrls': '未在文件中找到有效的 Instagram (p/reel/reels/tv) 视频链接',
+        'toast.merged': '已从文件中读取并合并 {n} 个 Instagram 链接！请点击开始下载。',
+        'toast.openFileFail': '无法打开文件',
+        'error.instagram_auth': '下载失败。Instagram 限制了匿名访问，请尝试开启 Cookie 授权后再试。',
+        'error.download_failed': '下载失败。请检查链接或网络，或尝试开启 Cookie 授权。',
+        'error.file_not_found': '文件不存在',
+        'error.open_file_failed': '无法打开文件',
+        'error.open_folder_failed': '无法打开文件夹'
+      },
+      en: {
+        'title': 'InstaDownloader - Local Video Downloader',
+        'status.connecting': 'Connecting to local service...',
+        'status.connected': 'Local service connected',
+        'status.retry': 'Disconnected, retrying...',
+        'card.import': 'Import download tasks',
+        'card.queue': 'Download queue',
+        'label.urls': 'Instagram video URLs',
+        'label.cookies': 'Browser cookie source',
+        'label.upload': 'Upload CSV or Excel for bulk import',
+        'cookies.none': 'None (default)',
+        'divider.or': 'or',
+        'dropzone.main': '<span class="highlight">Click to choose</span> or drop a file here',
+        'dropzone.hint': 'Supports .csv, .xlsx, .xls',
+        'btn.start': 'Start download',
+        'btn.clearUrls': 'Clear URLs',
+        'btn.openFolder': 'Open downloads folder',
+        'btn.clearDone': 'Clear completed',
+        'btn.download': 'Download',
+        'btn.openLocal': 'Open local',
+        'queue.empty': 'Queue is empty. Add tasks on the left.',
+        'queue.count': '{n} tasks',
+        'job.pending': 'Queued',
+        'job.downloading': 'Downloading',
+        'job.completed': 'Done',
+        'job.failed': 'Failed',
+        'job.waiting': 'Waiting...',
+        'job.done': 'Finished',
+        'job.error': 'Something went wrong',
+        'job.speedEta': 'Speed: {speed} | ETA: {eta}',
+        'toast.added': 'Added {n} task(s)',
+        'toast.addFailed': 'Failed to add tasks',
+        'toast.serverFail': 'Server connection failed',
+        'toast.invalidUrl': 'Enter valid Instagram URLs starting with http/https',
+        'toast.cleared': 'Cleared completed tasks',
+        'toast.fileType': 'Only .csv, .xlsx, .xls are supported',
+        'toast.csvError': 'CSV parse error: {msg}',
+        'toast.excelError': 'Excel parse error: {msg}',
+        'toast.noUrls': 'No valid Instagram (p/reel/reels/tv) links found in the file',
+        'toast.merged': 'Merged {n} Instagram link(s) from the file. Click Start download.',
+        'toast.openFileFail': 'Could not open file',
+        'error.instagram_auth': 'Download failed. Instagram blocked anonymous access — try enabling cookie auth.',
+        'error.download_failed': 'Download failed. Check the URL or network, or try cookie auth.',
+        'error.file_not_found': 'File does not exist',
+        'error.open_file_failed': 'Could not open file',
+        'error.open_folder_failed': 'Could not open folder'
+      }
+    };
+
+    let currentLang = localStorage.getItem('appLang') || 'zh';
+    if (!I18N[currentLang]) currentLang = 'zh';
+
+    function t(key, vars = {}) {
+      const dict = I18N[currentLang] || I18N.zh;
+      let text = dict[key] ?? I18N.zh[key] ?? key;
+      Object.keys(vars).forEach(k => {
+        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
+      });
+      return text;
+    }
+
+    function translateError(code) {
+      if (!code) return t('job.error');
+      const key = `error.${code}`;
+      const dict = I18N[currentLang] || I18N.zh;
+      if (dict[key] || I18N.zh[key]) return t(key);
+      return code;
+    }
+
+    function applyI18n() {
+      document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+      document.title = t('title');
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.getAttribute('data-i18n'));
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        el.innerHTML = t(el.getAttribute('data-i18n-html'));
+      });
+
+      document.querySelectorAll('#langSwitch button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === currentLang);
+      });
+
+      const noneOpt = cookiesBrowserSelect.querySelector('option[value="none"]');
+      if (noneOpt) noneOpt.textContent = t('cookies.none');
+
+      if (connectionState === 'connected') {
+        statusText.textContent = t('status.connected');
+      } else if (connectionState === 'retry') {
+        statusText.textContent = t('status.retry');
+      } else {
+        statusText.textContent = t('status.connecting');
+      }
+
+      renderQueue();
+    }
+
+    function setLang(lang) {
+      if (!I18N[lang] || lang === currentLang) return;
+      currentLang = lang;
+      localStorage.setItem('appLang', lang);
+      applyI18n();
+    }
+
+    document.getElementById('langSwitch').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-lang]');
+      if (btn) setLang(btn.dataset.lang);
+    });
+
     const statusDot = document.getElementById('statusDot');
     const statusText = document.getElementById('statusText');
     const queueList = document.getElementById('queueList');
@@ -648,15 +848,21 @@
     const cookiesBrowserSelect = document.getElementById('cookiesBrowserSelect');
 
     let jobsMap = new Map();
+    let connectionState = 'connecting';
 
-    // Render browser options from installed apps, then restore localStorage selection
     async function loadInstalledBrowsers() {
       try {
         const res = await fetch('/api/browsers');
         const data = await res.json();
         const browsers = Array.isArray(data.browsers) ? data.browsers : [];
+        const saved = cookiesBrowserSelect.value || localStorage.getItem('cookiesBrowser') || 'none';
 
-        cookiesBrowserSelect.innerHTML = '<option value="none">无 (默认)</option>';
+        cookiesBrowserSelect.innerHTML = '';
+        const noneOption = document.createElement('option');
+        noneOption.value = 'none';
+        noneOption.textContent = t('cookies.none');
+        cookiesBrowserSelect.appendChild(noneOption);
+
         browsers.forEach(browser => {
           const option = document.createElement('option');
           option.value = browser.id;
@@ -664,8 +870,7 @@
           cookiesBrowserSelect.appendChild(option);
         });
 
-        const saved = localStorage.getItem('cookiesBrowser');
-        if (saved && [...cookiesBrowserSelect.options].some(o => o.value === saved)) {
+        if ([...cookiesBrowserSelect.options].some(o => o.value === saved)) {
           cookiesBrowserSelect.value = saved;
         } else {
           cookiesBrowserSelect.value = 'none';
@@ -679,9 +884,7 @@
     cookiesBrowserSelect.addEventListener('change', () => {
       localStorage.setItem('cookiesBrowser', cookiesBrowserSelect.value);
     });
-    loadInstalledBrowsers();
 
-    // Show toast message
     function showToast(message, isError = false) {
       toastMsg.innerText = message;
       const icon = toast.querySelector('.toast-icon');
@@ -696,18 +899,19 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // Connect to Server-Sent Events (SSE)
     function connectSSE() {
       const eventSource = new EventSource('/api/events');
 
       eventSource.onopen = () => {
+        connectionState = 'connected';
         statusDot.classList.add('connected');
-        statusText.innerText = '本地服务已连接';
+        statusText.innerText = t('status.connected');
       };
 
       eventSource.onerror = () => {
+        connectionState = 'retry';
         statusDot.classList.remove('connected');
-        statusText.innerText = '连接断开，正在重试...';
+        statusText.innerText = t('status.retry');
       };
 
       eventSource.addEventListener('init', (e) => {
@@ -737,7 +941,22 @@
       });
     }
 
-    // Render entire queue list
+    function jobStatusLabel(status) {
+      if (status === 'downloading') return t('job.downloading');
+      if (status === 'completed') return t('job.completed');
+      if (status === 'failed') return t('job.failed');
+      return t('job.pending');
+    }
+
+    function jobSpeedEta(job) {
+      if (job.status === 'downloading' && job.speed) {
+        return t('job.speedEta', { speed: job.speed, eta: job.eta });
+      }
+      if (job.status === 'completed') return t('job.done');
+      if (job.status === 'failed') return translateError(job.error);
+      return t('job.waiting');
+    }
+
     function renderQueue() {
       if (jobsMap.size === 0) {
         queueList.innerHTML = `
@@ -745,76 +964,53 @@
             <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"></path>
             </svg>
-            <p>当前队列为空，请在左侧添加下载任务</p>
+            <p>${t('queue.empty')}</p>
           </div>
         `;
-        queueCount.innerText = '0 个任务';
+        queueCount.innerText = t('queue.count', { n: 0 });
         return;
       }
 
-      queueCount.innerText = `${jobsMap.size} 个任务`;
+      queueCount.innerText = t('queue.count', { n: jobsMap.size });
       queueList.innerHTML = '';
-      
-      // Sort jobs by ID or order added (reverse for recent on top)
       const sortedJobs = Array.from(jobsMap.values()).reverse();
-      
       sortedJobs.forEach(job => {
         queueList.appendChild(createJobElement(job));
       });
     }
 
-    // Create a single job element
     function createJobElement(job) {
       const card = document.createElement('div');
       card.className = 'job-card';
       card.id = `job-${job.id}`;
-      
+
       let badgeClass = 'badge-pending';
-      let statusText = '排队中';
-      if (job.status === 'downloading') {
-        badgeClass = 'badge-downloading';
-        statusText = '下载中';
-      } else if (job.status === 'completed') {
-        badgeClass = 'badge-completed';
-        statusText = '已完成';
-      } else if (job.status === 'failed') {
-        badgeClass = 'badge-failed';
-        statusText = '失败';
-      }
+      if (job.status === 'downloading') badgeClass = 'badge-downloading';
+      else if (job.status === 'completed') badgeClass = 'badge-completed';
+      else if (job.status === 'failed') badgeClass = 'badge-failed';
 
       const showProgress = job.status === 'downloading' || job.status === 'completed';
       const progressPercent = job.progress || 0;
-      
-      // Speed and ETA description
-      let speedEta = '';
-      if (job.status === 'downloading' && job.speed) {
-        speedEta = `速度: ${job.speed} | 剩余: ${job.eta}`;
-      } else if (job.status === 'completed') {
-        speedEta = '下载完毕';
-      } else if (job.status === 'failed') {
-        speedEta = job.error || '出错了';
-      } else {
-        speedEta = '等待中...';
-      }
+      const safePath = (job.filePath || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
       card.innerHTML = `
         <div class="job-top">
           <div class="job-url" title="${job.url}">${job.url}</div>
-          <span class="job-badge ${badgeClass}">${statusText}</span>
+          <span class="job-badge ${badgeClass}">${jobStatusLabel(job.status)}</span>
         </div>
         <div class="job-info-row">
           <span>${job.addedAt}</span>
-          <span class="job-speed-eta">${speedEta}</span>
+          <span class="job-speed-eta">${jobSpeedEta(job)}</span>
         </div>
         <div class="job-progress-container" style="display: ${showProgress ? 'block' : 'none'}">
           <div class="job-progress-bar" style="width: ${progressPercent}%"></div>
         </div>
         <div class="job-file-info" style="display: ${job.status === 'completed' && job.filename ? 'flex' : 'none'}">
-          <div class="job-filename" title="${job.filename}">📁 ${job.filename}</div>
+          <div class="job-filename" title="${job.filename || ''}">📁 ${job.filename || ''}</div>
           <div class="job-actions">
-            ${job.downloadUrl ? `<a class="job-action-btn" href="${job.downloadUrl}" download="${job.filename}">下载视频</a>` : ''}
-            <button class="job-open-btn" onclick="openFile('${job.filePath.replace(/\\/g, '\\\\')}')">
-              打开本地
+            ${job.downloadUrl ? `<a class="job-action-btn" href="${job.downloadUrl}" download="${job.filename}">${t('btn.download')}</a>` : ''}
+            <button class="job-open-btn" onclick="openFile('${safePath}')">
+              ${t('btn.openLocal')}
             </button>
           </div>
         </div>
@@ -822,76 +1018,50 @@
       return card;
     }
 
-    // Update specific job in the DOM to prevent full rerender
     function updateJobDOM(job) {
       const card = document.getElementById(`job-${job.id}`);
       if (!card) {
-        renderQueue(); // Fallback to full render if card not found
+        renderQueue();
         return;
       }
 
-      // Update badge
       const badge = card.querySelector('.job-badge');
       badge.className = 'job-badge';
-      let statusText = '排队中';
-      if (job.status === 'downloading') {
-        badge.classList.add('badge-downloading');
-        statusText = '下载中';
-      } else if (job.status === 'completed') {
-        badge.classList.add('badge-completed');
-        statusText = '已完成';
-      } else if (job.status === 'failed') {
-        badge.classList.add('badge-failed');
-        statusText = '失败';
-      }
-      badge.innerText = statusText;
+      if (job.status === 'downloading') badge.classList.add('badge-downloading');
+      else if (job.status === 'completed') badge.classList.add('badge-completed');
+      else if (job.status === 'failed') badge.classList.add('badge-failed');
+      else badge.classList.add('badge-pending');
+      badge.innerText = jobStatusLabel(job.status);
 
-      // Update progress bar
       const progContainer = card.querySelector('.job-progress-container');
       const progBar = card.querySelector('.job-progress-bar');
       const showProgress = job.status === 'downloading' || job.status === 'completed';
       progContainer.style.display = showProgress ? 'block' : 'none';
       progBar.style.width = `${job.progress || 0}%`;
 
-      // Update speed & ETA info
-      const speedEtaEl = card.querySelector('.job-speed-eta');
-      let speedEta = '';
-      if (job.status === 'downloading' && job.speed) {
-        speedEta = `速度: ${job.speed} | 剩余: ${job.eta}`;
-      } else if (job.status === 'completed') {
-        speedEta = '下载完毕';
-      } else if (job.status === 'failed') {
-        speedEta = job.error || '出错了';
-      } else {
-        speedEta = '等待中...';
-      }
-      speedEtaEl.innerText = speedEta;
+      card.querySelector('.job-speed-eta').innerText = jobSpeedEta(job);
 
-      // Update file info block
       const fileInfo = card.querySelector('.job-file-info');
       if (job.status === 'completed' && job.filename) {
+        const safePath = (job.filePath || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
         fileInfo.style.display = 'flex';
         fileInfo.innerHTML = `
           <div class="job-filename" title="${job.filename}">📁 ${job.filename}</div>
           <div class="job-actions">
-            ${job.downloadUrl ? `<a class="job-action-btn" href="${job.downloadUrl}" download="${job.filename}">下载视频</a>` : ''}
-            <button class="job-open-btn" onclick="openFile('${job.filePath.replace(/\\/g, '\\\\')}')">
-              打开本地
+            ${job.downloadUrl ? `<a class="job-action-btn" href="${job.downloadUrl}" download="${job.filename}">${t('btn.download')}</a>` : ''}
+            <button class="job-open-btn" onclick="openFile('${safePath}')">
+              ${t('btn.openLocal')}
             </button>
           </div>
         `;
       } else {
         fileInfo.style.display = 'none';
       }
-      
-      // Update local storage representation
+
       jobsMap.set(job.id, job);
-      
-      // Update count badge
-      queueCount.innerText = `${jobsMap.size} 个任务`;
+      queueCount.innerText = t('queue.count', { n: jobsMap.size });
     }
 
-    // Call open-file endpoint
     function openFile(filePath) {
       fetch('/api/open-file', {
         method: 'POST',
@@ -900,31 +1070,30 @@
       })
       .then(res => res.json())
       .then(data => {
-        if (data.error) showToast(data.error, true);
+        if (data.error) showToast(translateError(data.error), true);
       })
-      .catch(err => showToast('无法打开文件', true));
+      .catch(() => showToast(t('toast.openFileFail'), true));
     }
 
-    // Add URLs from manual textarea
     function triggerDownload(urls) {
       if (urls.length === 0) return;
-      
+
       const cookiesBrowser = cookiesBrowserSelect.value;
-      
+
       fetch('/api/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ urls, cookiesBrowser })
       })
       .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            showToast(`已成功添加 ${data.count} 个任务`);
-          } else {
-          showToast(data.error || '添加任务失败', true);
+      .then(data => {
+        if (data.success) {
+          showToast(t('toast.added', { n: data.count }));
+        } else {
+          showToast(data.error || t('toast.addFailed'), true);
         }
       })
-      .catch(() => showToast('服务器连接失败', true));
+      .catch(() => showToast(t('toast.serverFail'), true));
     }
 
     addBtn.addEventListener('click', () => {
@@ -932,9 +1101,9 @@
       const urls = content.split('\n')
         .map(url => url.trim())
         .filter(url => url.startsWith('http://') || url.startsWith('https://'));
-      
+
       if (urls.length === 0) {
-        showToast('请输入有效的 Instagram 视频 URL (以 http/https 开头)', true);
+        showToast(t('toast.invalidUrl'), true);
         return;
       }
       triggerDownload(urls);
@@ -945,29 +1114,24 @@
       urlsInput.focus();
     });
 
-    // Clear completed tasks
     clearBtn.addEventListener('click', () => {
       fetch('/api/clear', { method: 'POST' })
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            showToast('已清理已完成任务');
+            showToast(t('toast.cleared'));
           }
         });
     });
 
-    // Open download folder in finder
     openFolderBtn.addEventListener('click', () => {
       fetch('/api/open-folder', { method: 'POST' })
         .then(res => res.json())
         .then(data => {
-          if (data.error) showToast(data.error, true);
+          if (data.error) showToast(translateError(data.error), true);
         });
     });
 
-    // --- Drag and Drop File Parsing Logic ---
-
-    // Prevent default drag behaviors
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
       dropzone.addEventListener(eventName, preventDefaults, false);
       document.body.addEventListener(eventName, preventDefaults, false);
@@ -978,7 +1142,6 @@
       e.stopPropagation();
     }
 
-    // Toggle highlight class when dragging over
     ['dragenter', 'dragover'].forEach(eventName => {
       dropzone.addEventListener(eventName, () => dropzone.classList.add('dragover'), false);
     });
@@ -987,72 +1150,58 @@
       dropzone.addEventListener(eventName, () => dropzone.classList.remove('dragover'), false);
     });
 
-    // Handle dropped files
     dropzone.addEventListener('drop', (e) => {
-      const dt = e.dataTransfer;
-      const files = dt.files;
-      if (files.length > 0) {
-        handleFile(files[0]);
-      }
+      const files = e.dataTransfer.files;
+      if (files.length > 0) handleFile(files[0]);
     });
 
-    // Handle click to select file
     dropzone.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        handleFile(e.target.files[0]);
-      }
+      if (e.target.files.length > 0) handleFile(e.target.files[0]);
     });
 
-    // Parse CSV or Excel file
     function handleFile(file) {
       const reader = new FileReader();
       const extension = file.name.split('.').pop().toLowerCase();
 
       if (extension === 'csv') {
         reader.onload = function (e) {
-          const text = e.target.result;
-          parseCSV(text);
+          parseCSV(e.target.result);
         };
         reader.readAsText(file);
       } else if (extension === 'xlsx' || extension === 'xls') {
         reader.onload = function (e) {
-          const data = new Uint8Array(e.target.result);
-          parseExcel(data);
+          parseExcel(new Uint8Array(e.target.result));
         };
         reader.readAsArrayBuffer(file);
       } else {
-        showToast('仅支持 .csv, .xlsx, .xls 文件格式', true);
+        showToast(t('toast.fileType'), true);
       }
     }
 
-    // Parse CSV helper using PapaParse
     function parseCSV(text) {
       Papa.parse(text, {
         complete: function(results) {
           extractUrlsFromGrid(results.data);
         },
         error: function(err) {
-          showToast('CSV 文件解析错误: ' + err.message, true);
+          showToast(t('toast.csvError', { msg: err.message }), true);
         }
       });
     }
 
-    // Parse Excel helper using SheetJS (XLSX)
     function parseExcel(data) {
       try {
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
-        // Convert to array of arrays
         const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
         extractUrlsFromGrid(rows);
       } catch (err) {
-        showToast('Excel 文件解析错误: ' + err.message, true);
+        showToast(t('toast.excelError', { msg: err.message }), true);
       }
     }
 
-    // Find and extract any valid Instagram URL from any cell in the file grid
     function extractUrlsFromGrid(grid) {
       const urls = [];
       const insUrlRegex = /(https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel|reels|tv)\/[A-Za-z0-9_-]+)/i;
@@ -1060,32 +1209,27 @@
       for (let r = 0; r < grid.length; r++) {
         const row = grid[r];
         if (!row || !Array.isArray(row)) continue;
-        
+
         for (let c = 0; c < row.length; c++) {
           const cellVal = String(row[c] || '').trim();
           if (!cellVal) continue;
-
-          // Check if the cell content contains an Instagram link
           const match = cellVal.match(insUrlRegex);
-          if (match) {
-            urls.push(match[1]); // push the matched URL group
-          }
+          if (match) urls.push(match[1]);
         }
       }
 
       if (urls.length === 0) {
-        showToast('未在文件中找到有效的 Instagram (p/reel/reels/tv) 视频链接', true);
+        showToast(t('toast.noUrls'), true);
         return;
       }
 
-      // Populate text area with found URLs for preview and user's flexibility
-       const currentVal = urlsInput.value.trim();
-       const combinedVal = currentVal ? (currentVal + '\n' + urls.join('\n')) : urls.join('\n');
-       urlsInput.value = combinedVal;
-       showToast(`已从文件中读取并合并 ${urls.length} 个 Instagram 链接！请点击开始下载。`);
+      const currentVal = urlsInput.value.trim();
+      urlsInput.value = currentVal ? (currentVal + '\n' + urls.join('\n')) : urls.join('\n');
+      showToast(t('toast.merged', { n: urls.length }));
     }
 
-    // Start everything
+    applyI18n();
+    loadInstalledBrowsers();
     connectSSE();
   </script>
 </body>

@@ -1,5 +1,7 @@
 # Instagram Local Video Downloader
 
+[中文](README.md) | [English](README.en.md)
+
 本地运行的 Instagram 视频批量下载小工具。后端使用 **Node.js + Express**，下载引擎为 **`yt-dlp`**，前端提供实时进度与批量导入界面。
 
 ## 主要功能
