@@ -1,48 +1,50 @@
-# Instagram Local Video Downloader (InstaDownloader Local)
+# Instagram Local Video Downloader
 
-这是一个本地运行的 Instagram 视频批量下载小工具。使用 **Node.js + Express** 作为后端，结合 **`yt-dlp`** 作为底层下载引擎，前端使用高级的暗黑科技风（Glassmorphism 玻璃拟态）进行展示。
+本地运行的 Instagram 视频批量下载小工具。后端使用 **Node.js + Express**，下载引擎为 **`yt-dlp`**，前端提供实时进度与批量导入界面。
 
-## 🌟 主要功能
+## 主要功能
 
-- 🖥️ **本地运行**：完全在本地电脑上工作，无需上传敏感凭据到云端。
-- 🔗 **多链接输入**：在文本框内直接粘贴多个链接，一行一个。
-- 📂 **表格/文档批量导入**：支持直接拖拽上传 `.csv`, `.xlsx`, `.xls` 文件。智能搜索提取文件内所有单元格的 Instagram 链接并自动合并。
-- ⚡ **实时进度条**：使用 **Server-Sent Events (SSE)** 实现毫秒级下载进度、速度与剩余时间实时展示。
-- 📁 **本地访达交互**：
-  - 点击“**打开下载文件夹**”直接在 Mac Finder 中定位下载文件夹。
-  - 下载完成后，视频下方会生成“**打开文件**”按钮，点击即可直接调用 Mac 默认播放器打开观看。
-- 🛡️ **单任务排队机制**：默认采用单线程依次下载，极大程度降低因并发请求过高被 Instagram 临时屏蔽 IP / 账号的风险。
+- **本地运行**：完全在本机工作，无需把登录凭据上传到云端
+- **多链接输入**：文本框内粘贴多个链接，一行一个
+- **表格批量导入**：支持拖拽上传 `.csv` / `.xlsx` / `.xls`，自动提取所有 Instagram 链接
+- **浏览器 Cookie 授权**：自动检测本机已安装浏览器（Chrome、Safari、Firefox、Edge、Brave、Opera），可选读取 Cookie 以应对 Instagram 登录限制
+- **实时进度**：通过 Server-Sent Events (SSE) 展示下载进度、速度与剩余时间
+- **打开本地文件**：下载完成后可直接打开文件或下载目录（macOS 使用 Finder）
+- **单任务排队**：默认串行下载，降低被限流风险
+- **按日期归档**：视频保存在 `./downloads/YYYY-MM-DD/` 目录下
 
----
+## 安装与准备
 
-## 🛠️ 安装与准备
+### 1. 安装 `yt-dlp`
 
-### 1. 安装底层下载引擎 `yt-dlp`
-该工具依赖 `yt-dlp` 获取视频。如果您还未安装，请在 Mac 终端中运行：
+**macOS：**
+
 ```bash
 brew install yt-dlp
 ```
 
-### 2. 运行本项目
-在项目根目录（`/Users/hesunfly/Develop/company/tool/insDownScript`）下执行：
+**Windows：** 可用 [winget](https://winget.run/) / [Scoop](https://scoop.sh/) / 官方发布包安装，并确保 `yt-dlp` 在 PATH 中可用。
+
+### 2. 安装依赖并启动
 
 ```bash
-# 启动本地服务器
+npm install
 npm start
 ```
 
-启动成功后，在浏览器中打开：
-👉 **[http://localhost:3000](http://localhost:3000)**
+启动成功后打开：**http://localhost:3010**
 
----
+可通过环境变量修改端口，例如：`PORT=3000 npm start`
 
-## 📋 文件导入说明
+## Cookie 说明
 
-- 无论是 CSV 还是 Excel 文件，**您不需要设置任何特定的表头或格式**。
-- 工具会自动遍历表格内**所有的单元格**，通过正则表达式提取其中符合 Instagram 视频帖子（`/p/`、`/reel/`、`/reels/`、`/tv/`）格式的 URL 并加入队列。
-- 这样，您导出的表格哪怕杂乱无章，也可以直接拖入进行批量解析。
+若匿名下载失败（常见提示与登录 / cookies 相关），在页面中选择「浏览器 Cookie 来源」。下拉列表仅展示本机已检测到的浏览器。使用前请先在对应浏览器中登录 Instagram。
 
----
+## 文件导入说明
 
-## 📂 文件存放路径
-所有下载的视频将自动保存在项目目录下的 `./downloads/` 文件夹中。
+- 无需特定表头或格式
+- 工具会遍历表格内所有单元格，提取符合 Instagram 帖子格式的 URL（`/p/`、`/reel/`、`/reels/`、`/tv/`）并加入队列
+
+## 文件存放路径
+
+所有下载的视频保存在项目目录下的 `./downloads/` 中，并按当天日期分子目录。
